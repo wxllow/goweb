@@ -1,0 +1,8 @@
+# Directory with your site's files
+static_path = "./site"
+
+# Location of 404 page (relative to static_path)
+not_found_path = "404.html"
+
+# IP and Port to listen on
+listen_on = "127.0.0.1:8080"

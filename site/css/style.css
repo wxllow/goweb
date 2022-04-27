@@ -1,0 +1,7 @@
+.nodecoration {
+    text-decoration: none;
+}
+
+.nodecoration:hover {
+    filter: brightness(85%);
+}

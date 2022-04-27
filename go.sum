@@ -1,2 +1,4 @@
+github.com/gomarkdown/markdown v0.0.0-20220419181919-412bcf14cd2e h1:eF2U4VaZBPyxJZQxz8b0ulG3Dw2yQ2kGRJ9Io/cGQeE=
+github.com/gomarkdown/markdown v0.0.0-20220419181919-412bcf14cd2e/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 github.com/pelletier/go-toml v1.9.5 h1:4yBQzkHv+7BHq2PQUZF3Mx0IYxG7LsP222s7Agd3ve8=
 github.com/pelletier/go-toml v1.9.5/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=

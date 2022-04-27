@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
+	markdown "github.com/gomarkdown/markdown"
 	toml "github.com/pelletier/go-toml"
 )
 
@@ -45,6 +47,7 @@ func logware(next http.Handler) http.Handler {
 // Request handler
 func _HandleRequest(w http.ResponseWriter, r *http.Request) {
 	path, err := filepath.Abs(r.URL.Path)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -83,9 +86,34 @@ func _HandleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Format markdown files
+	if strings.HasSuffix(r.URL.Path, ".md") {
+		// Read markdown file
+		body, err := ioutil.ReadFile(path)
+
+		if err != nil {
+			log.Fatalf("Unable to read file: %v", err)
+		}
+
+		// Read template from /_markdown.html
+		template, err := ioutil.ReadFile(filepath.Join(staticPath, "_markdown.html"))
+
+		if err != nil {
+			log.Fatalf("Unable to read file: %v", err)
+		}
+
+		// Use template and generate HTML page from parsed markdown
+		data := []byte(fmt.Sprintf(string(template), string(markdown.ToHTML(body, nil, nil))))
+
+		w.Write(data)
+		return
+	}
+
+	// Serve requested file
 	fileServer.ServeHTTP(w, r)
 }
 
+// Middleware request handler
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("%s --> %s %s %s \n", r.RemoteAddr, r.Method, r.Host, r.URL.Path)
 	_HandleRequest(w, r)

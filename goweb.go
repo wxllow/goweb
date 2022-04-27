@@ -13,12 +13,30 @@ import (
 	toml "github.com/pelletier/go-toml"
 )
 
+// thing or default
+func boolOR(b interface{}, d bool) bool {
+	if b != nil {
+		return b.(bool)
+	}
+
+	return d
+}
+
+func stringOR(b interface{}, d string) string {
+	if b != nil {
+		return b.(string)
+	}
+
+	return d
+}
+
 // Load config
 var config, _ = toml.LoadFile("./site.toml")
 
-var staticPath string = config.Get("static_path").(string)
-var notFoundPath string = config.Get("not_found_path").(string)
-var listenOn string = config.Get("listen_on").(string)
+var staticPath string = stringOR(config.Get("static_path"), "./site")
+var notFoundPath string = stringOR(config.Get("not_found_path"), "404.html")
+var listenOn string = stringOR(config.Get("listen_on"), ":8080")
+var markdownParse bool = boolOR(config.Get("parse_markdown"), true)
 
 // Load file server
 var fileServer = http.FileServer(http.Dir(staticPath))
@@ -87,7 +105,7 @@ func _HandleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Format markdown files
-	if strings.HasSuffix(r.URL.Path, ".md") {
+	if strings.HasSuffix(r.URL.Path, ".md") && markdownParse {
 		// Read markdown file
 		body, err := ioutil.ReadFile(path)
 

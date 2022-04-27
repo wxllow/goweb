@@ -6,3 +6,6 @@ not_found_path = "404.html"
 
 # IP and Port to listen on
 listen_on = "127.0.0.1:8080"
+
+# Whether to parse markdown or not
+parse_markdown = true
